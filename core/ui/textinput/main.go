@@ -2,23 +2,47 @@ package ui_textinput
 
 import (
 	"fmt"
+	"github.com/fatih/color"
+	"regexp"
+
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 )
 
-func ReadText(title string) (string, error) {
-	p := tea.NewProgram(initialModel(title))
-	result, err := p.Run()
-	if err != nil {
-		return "", err
+func ReadText(title string, regexPattern string) (string, error) {
+	var compiledRegex *regexp.Regexp
+	var err error
+
+	if regexPattern != "" {
+		compiledRegex, err = regexp.Compile(regexPattern)
+		if err != nil {
+			return "", fmt.Errorf("invalid regex pattern: %v", err)
+		}
 	}
 
-	m, ok := result.(model)
-	if !ok {
-		return "", fmt.Errorf("unexpected model type")
-	}
+	for {
+		p := tea.NewProgram(initialModel(title))
+		result, err := p.Run()
+		if err != nil {
+			return "", err
+		}
 
-	return m.textInput.Value(), nil
+		m, ok := result.(model)
+		if !ok {
+			return "", fmt.Errorf("unexpected model type")
+		}
+
+		input := m.textInput.Value()
+		if m.cancelled {
+			return "", fmt.Errorf("input cancelled")
+		}
+		if compiledRegex == nil || compiledRegex.MatchString(input) {
+			return input, nil
+		} else {
+			s := fmt.Sprintf("Input does not match the required pattern. Please try again. Valid regex: %s", compiledRegex)
+			color.Red(s)
+		}
+	}
 }
 
 type (
@@ -29,6 +53,7 @@ type model struct {
 	textInput textinput.Model
 	err       error
 	title     string
+	cancelled bool
 }
 
 func initialModel(title string) model {
@@ -40,6 +65,7 @@ func initialModel(title string) model {
 		textInput: ti,
 		err:       nil,
 		title:     title,
+		cancelled: false,
 	}
 }
 
@@ -53,11 +79,13 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		switch msg.Type {
-		case tea.KeyEnter, tea.KeyCtrlC, tea.KeyEsc:
+		case tea.KeyEnter:
+			return m, tea.Quit
+		case tea.KeyCtrlC, tea.KeyEsc:
+			m.cancelled = true
 			return m, tea.Quit
 		}
 
-	// We handle errors just like any other message
 	case errMsg:
 		m.err = msg
 		return m, nil
@@ -69,9 +97,8 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 func (m model) View() string {
 	return fmt.Sprintf(
-		"\n\n%s\n%s\n%s",
+		"%s\n%s\n",
 		m.title,
 		m.textInput.View(),
-		"(esc to quit)",
 	) + "\n"
 }

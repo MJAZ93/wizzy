@@ -2,6 +2,8 @@ package writter
 
 import (
 	"errors"
+	"fmt"
+	"github.com/fatih/color"
 	"wizzy/core/model"
 )
 
@@ -11,7 +13,7 @@ func WriteFile(rule model.Rule, params []model.Param) error {
 	fileOriginPath := replacePlaceholders(rule.Origin, params)
 	fileExists, err := fileExistsInDir(fileDestinationPath, fileOriginPath)
 	if err != nil {
-		return errors.New("will be unable to verify dir: '" + rule.Path + "'" + "'. error: " + err.Error())
+		return errors.New(" will be unable to verify dir: '" + rule.Path + "'" + "'. error: " + err.Error())
 	}
 
 	//verify template file destination
@@ -39,6 +41,9 @@ func WriteFile(rule model.Rule, params []model.Param) error {
 		if err != nil {
 			return errors.New("unable to add templated content to file in the dir:'" + fileDestinationPath + "/" + fileOriginPath + "'. error: " + err.Error())
 		}
+
+		u := color.New(color.FgBlue).Add(color.Bold).Sprint("[UPDATED]")
+		fmt.Println(u, "- "+fileDestinationPath+"/"+fileOriginPath)
 	} else {
 		content, err := generateFileContent(templateFilePath, params)
 		if err != nil {
@@ -49,6 +54,9 @@ func WriteFile(rule model.Rule, params []model.Param) error {
 		if err != nil {
 			return errors.New("unable to create files in the dir:'" + fileDestinationPath + "'. error: " + err.Error())
 		}
+
+		u := color.New(color.FgBlue).Add(color.Bold).Sprint("[UPDATED]")
+		fmt.Println(u, "- "+fileDestinationPath+"/"+fileOriginPath)
 	}
 
 	return nil

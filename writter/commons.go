@@ -31,14 +31,20 @@ func replacePlaceholders(template string, params []model.Param) string {
 
 func fileExistsInDir(dir string, file string) (bool, error) {
 	if _, err := os.Stat(dir); os.IsNotExist(err) {
-		return false, fmt.Errorf("directory does not exist: %s", dir)
+		if mkErr := os.MkdirAll(dir, 0755); mkErr != nil {
+			return false, fmt.Errorf("failed to create directory: %s, error: %w", dir, mkErr)
+		}
+		return false, nil // Directory created, file does not exist yet
+	} else if err != nil {
+		return false, fmt.Errorf("failed to check directory: %s, error: %w", dir, err)
 	}
 
 	filePath := filepath.Join(dir, file)
-
 	if _, err := os.Stat(filePath); os.IsNotExist(err) {
-		return false, nil
+		return false, nil // File does not exist
+	} else if err != nil {
+		return false, fmt.Errorf("failed to check file: %s, error: %w", filePath, err)
 	}
 
-	return true, nil
+	return true, nil // File exists
 }

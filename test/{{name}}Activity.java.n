@@ -1,6 +1,7 @@
 package co.vm.features.{{feature}}
 
 import co.vm.features.apis.Api
+//New Imports comes here
 
 fun class {{feature}}Services {
     // Servico {{name}} {{feature}}

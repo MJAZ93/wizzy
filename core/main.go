@@ -1,30 +1,59 @@
 package core
 
 import (
-	ui_options "wizzy/core/ui/options"
+	"fmt"
+	"github.com/fatih/color"
+	"log"
+	ui_progress "wizzy/core/ui/progress"
+	ui_textarea "wizzy/core/ui/textarea"
 	ui_textinput "wizzy/core/ui/textinput"
+	"wizzy/reader"
 )
 
-//read template (path)
-//run
-//read params
+// read template (path)
+// run
+// read params
+func Run(folder string) {
+	fmt.Println("Reading template:" + "./" + folder + "/template.json")
 
-func Run() {
-	err, choice := ui_options.GetOption("Please choose an option (Enter to select, q to cancel)", []string{"trash", "recycle", "can", "mamob"})
+	template, err := reader.ReadTemplate("./" + folder + "/")
 	if err != nil {
-		println("Error:", err.Error())
-	} else {
-		println("Selected option:", choice)
+		color.Red("error reading template, err: " + err.Error())
+		log.Fatalf("exit with error: %v", err)
+		return
 	}
 
-	text, err := ui_textinput.ReadText("Type any")
+	finalTemplate, err := readTemplate(template, "./"+folder)
+	if err != nil {
+		color.Red("error reading template, err: " + err.Error())
+		log.Fatalf("exit with error: %v", err)
+		return
+	}
+
+	err = processTemplate(finalTemplate, "./"+folder)
+	if err != nil {
+		fmt.Println("err:", err.Error())
+		log.Fatalf("exit with error: %v", err)
+		return
+	}
+
+	color.Green("Successfully processed all rules")
+}
+
+func test() {
+	ui_progress.Show()
+
+	text, err := ui_textinput.ReadText("Type any", "")
 	if err != nil {
 		println("Error:", err.Error())
 	} else {
 		println("Text typed:", text)
 	}
 
+	text, err = ui_textarea.ReadText("Text area title")
+	if err != nil {
+		println("Error:", err.Error())
+	} else {
+		println("Text typed:", text)
+	}
 }
-
-func runRules(rule string) {}
-func readParams()          {}

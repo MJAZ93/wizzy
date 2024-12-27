@@ -17,13 +17,19 @@ type Parameter struct {
 	Regex     string        `json:"regex"`
 	Type      ParameterType `json:"type"`
 	Required  bool          `json:"required"`
-	Options   []string      `json:"main.go,omitempty"`
+	Options   []string      `json:"options"`
 	Condition string        `json:"condition,omitempty"`
 }
 
+type TemplateDesc struct {
+	Name string `json:"name"`
+	Desc string `json:"desc"`
+}
+
 type Template struct {
-	Parameters  []Parameter  `json:"parameters"`
-	StringRules []StringRule `json:"rules"`
-	Rules       []Rule
-	Folder      []Folder
+	TemplateDesc TemplateDesc `json:"desc"`
+	Parameters   []Parameter  `json:"parameters"`
+	StringRules  []StringRule `json:"rules"`
+	Rules        []Rule
+	Folder       []Folder
 }

@@ -1,23 +1,23 @@
 {
+	"desc": {
+		"name": "Main rule",
+		"description": "Alberga muitas execucoes, se executado vai criar 1 de cada."
+	},
 	"rules": [
 		{
-			"rule": "template -> activity_in_manifest",
+			"rule": "{{name}}Activity.java -> ./test/features/{{feature}}",
+			"condition": ""
+		},
+		{
+			"rule": "template -> package",
 			"condition": "name==Login"
-		},
-		{
-			"rule": "template -> activity_in_manifest",
-			"condition": ""
-		},
-		{
-			"rule": "{{name}}Activity.java -> /features/{{feature}}",
-			"condition": ""
 		}
 	],
 	"parameters": [
 		{
 			"id": "name",
-			"desc": "O nome do serviço",
-			"regex": "",
+			"desc": "O nome do serviço. Ex: GetKids.",
+			"regex": "ˆ*Service",
 			"type": "free",
 			"required": true
 		},

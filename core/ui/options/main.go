@@ -12,12 +12,12 @@ import (
 )
 
 var (
-	titleStyle        = lipgloss.NewStyle().MarginLeft(2)
-	itemStyle         = lipgloss.NewStyle().PaddingLeft(4)
+	titleStyle        = lipgloss.NewStyle().MarginLeft(0)
+	itemStyle         = lipgloss.NewStyle().PaddingLeft(2)
 	selectedItemStyle = lipgloss.NewStyle().PaddingLeft(2).Foreground(lipgloss.Color("170"))
 	paginationStyle   = list.DefaultStyles().PaginationStyle.PaddingLeft(4)
 	helpStyle         = list.DefaultStyles().HelpStyle.PaddingLeft(4).PaddingBottom(1)
-	quitTextStyle     = lipgloss.NewStyle().Margin(1, 0, 2, 4)
+	quitTextStyle     = lipgloss.NewStyle().MarginLeft(0)
 )
 
 type item string
@@ -50,6 +50,7 @@ func (d itemDelegate) Render(w io.Writer, m list.Model, index int, listItem list
 type model struct {
 	list     list.Model
 	choice   string
+	title    string
 	quitting bool
 }
 
@@ -73,8 +74,8 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			i, ok := m.list.SelectedItem().(item)
 			if ok {
 				m.choice = string(i)
+				return m, tea.Quit
 			}
-			return m, tea.Quit
 		}
 	}
 
@@ -84,13 +85,14 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m model) View() string {
-	if m.choice != "" {
-		return quitTextStyle.Render(fmt.Sprintf("%s - selected", m.choice))
-	}
 	if m.quitting {
-		return quitTextStyle.Render("Quiting")
+		return titleStyle.Render("Quiting")
 	}
-	return "\n" + m.list.View()
+	if m.choice != "" {
+		return titleStyle.Render(m.choice)
+	}
+
+	return m.list.View()
 }
 
 func GetOption(title string, options []string) (error, string) {
@@ -110,7 +112,7 @@ func GetOption(title string, options []string) (error, string) {
 	l.Styles.PaginationStyle = paginationStyle
 	l.Styles.HelpStyle = helpStyle
 
-	m := model{list: l}
+	m := model{list: l, title: title}
 
 	// Run the program
 	p := tea.NewProgram(m)
@@ -123,5 +125,9 @@ func GetOption(title string, options []string) (error, string) {
 	if finalModel.quitting && finalModel.choice == "" {
 		return errors.New("user canceled"), ""
 	}
+
+	s := fmt.Sprintf("%s \n> %s", title, finalModel.choice)
+	fmt.Println(s)
+
 	return nil, finalModel.choice
 }
