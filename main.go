@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/fatih/color"
+	"os"
 	"wizzy/core"
 )
 
@@ -13,7 +14,16 @@ func main() {
 	boldCyan := cyan.Add(color.Bold).Add(color.Underline)
 	boldCyan.Println("Starting Wizzy")
 
-	color.Cyan("working folder ./test")
+	folder := "./"
 
-	core.Run("test")
+	args := os.Args
+	if len(args) < 2 {
+		folder = folder + "wizzy"
+	} else {
+		folder = folder + args[1]
+	}
+
+	color.Cyan("working folder " + folder)
+
+	core.Run(folder)
 }

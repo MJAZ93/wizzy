@@ -1,0 +1,12 @@
+{
+	"desc": {
+		"name": "template/rule name",
+		"description": "template/rule description"
+	},
+	"rules": [
+
+	],
+	"parameters": [
+
+	]
+}
