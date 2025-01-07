@@ -8,9 +8,7 @@ fun class {{feature}}Services {
     fun
         {%if(type==GET)%}fetch{{name}}{%endif%}{%if(type==POST)%}post{{name}}{%endif%}
         (
-	    {%for (params as param)%}
-		    {{param}},
-	    {%endfor%}
+
     ) {
 	    return {{objectOut}};
     }
