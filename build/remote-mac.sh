@@ -30,4 +30,4 @@ unzip -o "$ZIP_FILE" -d "$EXTRACTED_FOLDER" || exit_on_error "Unzip failed"
 
 # Go back and clean up the zip file
 echo "Cleaning up..."
-rm -rf wizzy.zip __MACOSX
+rm -rf mac.zip __MACOSX
