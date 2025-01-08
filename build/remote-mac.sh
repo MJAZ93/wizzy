@@ -3,7 +3,7 @@
 # Determine OS type
 OS="$(uname)"
 ZIP_URL="https://raw.githubusercontent.com/MJAZ93/wizzy/main/build/mac.zip"
-ZIP_FILE="wizzy.zip"
+ZIP_FILE="mac.zip"
 EXTRACTED_FOLDER="."
 
 rm .wizzy
