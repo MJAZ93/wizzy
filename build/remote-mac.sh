@@ -28,6 +28,12 @@ echo "Extracting zip..."
 mkdir -p "$EXTRACTED_FOLDER"
 unzip -o "$ZIP_FILE" -d "$EXTRACTED_FOLDER" || exit_on_error "Unzip failed"
 
+# Move the contents to the current folder
+echo "Moving files to the root folder..."
+shopt -s dotglob  # Include hidden files
+mv mac/* . || exit_on_error "Failed to move files"
+shopt -u dotglob  # Turn off dotglob after moving
+
 # Go back and clean up the zip file
 echo "Cleaning up..."
-rm -rf mac.zip __MACOSX
+rm -rf mac.zip wizzy.zip __MACOSX
