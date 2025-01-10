@@ -8,39 +8,51 @@ import (
 	ui_textinput "wizzy/core/ui/textinput"
 )
 
-func readParams(template model.Template) ([]model.Param, error) {
+func readParams(template model.Template, existingParams []model.Param) ([]model.Param, error) {
 	var params []model.Param
 
 	for _, f := range template.Parameters {
 		var data string
 
-		//todo: validate regex
-		if f.Type == model.FreeType {
-			text, err := ui_textinput.ReadText(f.Desc, f.Regex)
-			if err != nil {
-				return nil, errors.New("cant read param from text, err:" + err.Error())
+		existing := false
+		for _, ep := range existingParams {
+			if f.ID == ep.Id {
+				params = append(params, model.Param{
+					Id:    ep.Id,
+					Value: ep.Value,
+				})
+				existing = true
 			}
-			data = text
-		} else if f.Type == model.ListType {
-
-		} else if f.Type == model.SelectType {
-			err, choice := ui_options.GetOption(f.Desc, f.Options)
-			if err != nil {
-				return nil, errors.New("cant read param from select, err:" + err.Error())
-			}
-			data = choice
-		} else if f.Type == model.FormattedType {
-			text, err := ui_textarea.ReadText(f.Desc)
-			if err != nil {
-				return nil, errors.New("cant read param from text, err:" + err.Error())
-			}
-			data = text
 		}
 
-		params = append(params, model.Param{
-			Id:    f.ID,
-			Value: data,
-		})
+		if !existing {
+			if f.Type == model.FreeType {
+				text, err := ui_textinput.ReadText(f.Desc, f.Regex)
+				if err != nil {
+					return nil, errors.New("cant read param from text, err:" + err.Error())
+				}
+				data = text
+			} else if f.Type == model.ListType {
+
+			} else if f.Type == model.SelectType {
+				err, choice := ui_options.GetOption(f.Desc, f.Options)
+				if err != nil {
+					return nil, errors.New("cant read param from select, err:" + err.Error())
+				}
+				data = choice
+			} else if f.Type == model.FormattedType {
+				text, err := ui_textarea.ReadText(f.Desc)
+				if err != nil {
+					return nil, errors.New("cant read param from text, err:" + err.Error())
+				}
+				data = text
+			}
+
+			params = append(params, model.Param{
+				Id:    f.ID,
+				Value: data,
+			})
+		}
 	}
 
 	return params, nil

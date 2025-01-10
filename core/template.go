@@ -40,10 +40,10 @@ func readTemplate(template model.Template, dir string) (model.Template, error) {
 	}
 }
 
-func processTemplate(template model.Template, dir string) error {
+func processTemplate(template model.Template, dir string, existingParams []model.Param) error {
 	color.Magenta("Processing template: " + dir + "/template.json")
 	color.Yellow("Reading params")
-	params, err := readParams(template)
+	params, err := readParams(template, existingParams)
 	if err != nil {
 		return errors.New("cant read params, err:" + err.Error())
 	}
@@ -79,7 +79,7 @@ func runRules(template model.Template, dir string, params []model.Param) error {
 				return errors.New("unable to navigate to folder, error:" + err.Error())
 			}
 
-			return processTemplate(t, dir+"/"+rule.Destination)
+			return processTemplate(t, dir+"/"+rule.Destination, params)
 		}
 	}
 

@@ -30,7 +30,7 @@ func Run(folder string) {
 		return
 	}
 
-	err = processTemplate(finalTemplate, "./"+folder)
+	err = processTemplate(finalTemplate, "./"+folder, nil)
 	if err != nil {
 		fmt.Println("err:", err.Error())
 		log.Fatalf("exit with error: %v", err)
