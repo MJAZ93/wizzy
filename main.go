@@ -20,7 +20,7 @@ func main() {
 	if len(args) < 2 {
 		folder = folder + ".wizzy"
 	} else {
-		folder = folder + args[1]
+		folder = folder + ".wizzy/" + args[1]
 	}
 
 	//todo: add clear descriptions of the params to not confuse

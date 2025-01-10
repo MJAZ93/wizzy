@@ -3,6 +3,7 @@ package core
 import (
 	"errors"
 	"github.com/fatih/color"
+	"path/filepath"
 	"wizzy/core/model"
 	"wizzy/reader"
 	"wizzy/writter"
@@ -74,12 +75,14 @@ func runRules(template model.Template, dir string, params []model.Param) error {
 				}
 			}
 		} else if rule.Rule == model.TemplateRule {
-			t, err := reader.ReadTemplate(dir + "/" + rule.Destination + "/")
+			workDir := filepath.Dir(dir) + "/" + rule.Destination
+
+			t, err := reader.ReadTemplate(workDir + "/")
 			if err != nil {
 				return errors.New("unable to navigate to folder, error:" + err.Error())
 			}
 
-			return processTemplate(t, dir+"/"+rule.Destination, params)
+			return processTemplate(t, workDir, params)
 		}
 	}
 

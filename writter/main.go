@@ -55,7 +55,7 @@ func WriteFile(rule model.Rule, params []model.Param) error {
 			return errors.New("unable to create files in the dir:'" + fileDestinationPath + "'. error: " + err.Error())
 		}
 
-		u := color.New(color.FgBlue).Add(color.Bold).Sprint("[UPDATED]")
+		u := color.New(color.FgGreen).Add(color.Bold).Sprint("[CREATED]")
 		fmt.Println(u, "- "+fileDestinationPath+"/"+fileOriginPath)
 	}
 
