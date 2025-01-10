@@ -23,7 +23,6 @@ func main() {
 		folder = folder + args[1]
 	}
 
-	//todo: reuse params, when a param can be blank explicitly tell it
 	//todo: add clear descriptions of the params to not confuse
 
 	color.Cyan("working folder " + folder)

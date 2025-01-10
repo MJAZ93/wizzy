@@ -14,23 +14,23 @@ import (
 // run
 // read params
 func Run(folder string) {
-	fmt.Println("Reading template:" + "./" + folder + "/template.json")
+	fmt.Println("Reading template:" + folder + "/template.json")
 
-	template, err := reader.ReadTemplate("./" + folder + "/")
+	template, err := reader.ReadTemplate(folder + "/")
 	if err != nil {
 		color.Red("error reading template, err: " + err.Error())
 		log.Fatalf("exit with error: %v", err)
 		return
 	}
 
-	finalTemplate, err := readTemplate(template, "./"+folder)
+	finalTemplate, err := readTemplate(template, folder)
 	if err != nil {
 		color.Red("error reading template, err: " + err.Error())
 		log.Fatalf("exit with error: %v", err)
 		return
 	}
 
-	err = processTemplate(finalTemplate, "./"+folder, nil)
+	err = processTemplate(finalTemplate, folder, nil)
 	if err != nil {
 		fmt.Println("err:", err.Error())
 		log.Fatalf("exit with error: %v", err)
