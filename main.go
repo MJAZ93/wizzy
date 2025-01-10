@@ -18,7 +18,7 @@ func main() {
 
 	args := os.Args
 	if len(args) < 2 {
-		folder = folder + "wizzy"
+		folder = folder + ".wizzy"
 	} else {
 		folder = folder + args[1]
 	}
