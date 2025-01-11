@@ -110,7 +110,7 @@ func insertCodeAtRegex(destContent, codeToInsert, regexPattern string) (string, 
 	}
 
 	// Decide where to insert the code
-	insertionPoint := loc[1] // Insert after the matched regex
+	insertionPoint := loc[0] // Insert before the matched regex
 	// If you want to insert before the matched regex, use loc[0]
 
 	// Ensure proper indentation
