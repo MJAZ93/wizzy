@@ -131,6 +131,3 @@ Wizzy is distributed under the [Fair Code License](https://faircode.io/).
 
 ## Donate - Support Development
 Help Wizzy grow by supporting us on [Patreon](https://www.patreon.com/MJAZ) or [Ko-Fi](https://ko-fi.com/afonsomatlhombe).
-
-### Work in Progress
-Stay tuned for updates and enhancements!
