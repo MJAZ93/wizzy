@@ -4,17 +4,7 @@ A directory-based, easy-to-use code generator that integrates seamlessly with yo
 
 ![Project Logo](build/img/logo.png)
 
-## Installation
-
-### Manual Installation
-- Add the `wizzy` binary to the root of your project.
-- Create a `.wizzy` folder and start defining your templates and rules.
-
-### One-Liner Installation (macOS)
-Run the following command in your terminal:
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/MJAZ93/wizzy/main/build/remote-mac.sh)"
-```
+![Preview](build/img/preview.gif)
 
 ## How to Use
 
@@ -22,10 +12,12 @@ Run the following command in your terminal:
 - Each folder represents a new template.
 - Every folder must include a `template.json` file to define the template's rules and parameters.
 
+See test directory.
+
 ### template.json
 The `template.json` file includes:
 1. **Description (`desc`)**: Metadata about the template.
-2. **Rules (`rules`)**: Defines how files are created or updated. Rules can also reference other templates (`template/template`).
+2. **Rules (`rules`)**: Defines how files are created or updated. Rules can also reference other templates (`template/template`), starting always with the temp.
 3. **Parameters (`parameters`)**: Inputs required by the template, such as:
     - **`free`**: Simple inline text.
     - **`select`**: A list of options.
@@ -73,7 +65,7 @@ The `template.json` file includes:
     }
   ]
 }
-```
+``` 
 
 ### Files
 - Each folder should include the template files used for creation or modification.
@@ -81,6 +73,8 @@ The `template.json` file includes:
 #### File Types
 1. **`.n` (New Files)**: Used when the target file does not exist.
 2. **`.e` (Edit Files)**: Used when updating an existing file.
+
+For example: `Main.java.e`, `Main.java.n`, `Main.svelte.e`. 
 
 #### Syntax for `.n` Files
 - Use `{{PARAM_NAME}}` to reference a parameter.
@@ -119,6 +113,18 @@ public void {%if(type=="GET")%}fetch{{name}}{%endif%}{%if(type=="POST")%}post{{n
 @@// New Declarations come here
 // {{name}} {{feature}}
 -@@
+```
+
+## Installation
+
+### Manual Installation
+- Add the `wizzy` binary to the root of your project.
+- Create a `.wizzy` folder and start defining your templates and rules.
+
+### One-Liner Installation (macOS)
+Run the following command in your terminal:
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/MJAZ93/wizzy/main/build/remote-mac.sh)"
 ```
 
 ## License
