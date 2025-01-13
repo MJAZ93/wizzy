@@ -1,8 +1,7 @@
+![Project Logo](build/img/logo.png)
 
 # Wizzy
 A directory-based, easy-to-use code generator that integrates seamlessly with your project.
-
-![Project Logo](build/img/logo.png)
 
 ![Preview](build/img/preview.gif)
 
