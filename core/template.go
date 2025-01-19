@@ -2,8 +2,10 @@ package core
 
 import (
 	"errors"
+	"fmt"
 	"github.com/fatih/color"
 	"path/filepath"
+	"strings"
 	"wizzy/core/model"
 	"wizzy/reader"
 	"wizzy/writter"
@@ -60,6 +62,8 @@ func processTemplate(template model.Template, dir string, existingParams []model
 }
 
 func runRules(template model.Template, dir string, params []model.Param) error {
+	var globalErr error
+
 	for _, rule := range template.Rules {
 		if rule.Rule == model.FileRule {
 
@@ -77,14 +81,24 @@ func runRules(template model.Template, dir string, params []model.Param) error {
 		} else if rule.Rule == model.TemplateRule {
 			workDir := filepath.Dir(dir) + "/" + rule.Destination
 
-			t, err := reader.ReadTemplate(workDir + "/")
+			fmt.Println("dir:", dir)
+			fmt.Println("work-dir:", workDir)
+
+			wd := workDir
+			if !strings.HasSuffix(workDir, "/") {
+				wd = workDir + "/"
+			}
+			t, err := reader.ReadTemplate(wd)
 			if err != nil {
 				return errors.New("unable to navigate to folder, error:" + err.Error())
 			}
 
-			return processTemplate(t, workDir, params)
+			globalErr = processTemplate(t, workDir, params)
+			if globalErr != nil {
+				return globalErr
+			}
 		}
 	}
 
-	return nil
+	return globalErr
 }

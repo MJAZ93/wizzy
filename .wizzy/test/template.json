@@ -1,0 +1,71 @@
+{
+	"desc": {
+		"name": "Main rule",
+		"description": "Alberga muitas execucoes, se executado vai criar 1 de cada."
+	},
+	"rules": [
+		{
+			"rule": "{{name}}Activity.java -> ./test/features/{{feature}}",
+			"condition": ""
+		},
+		{
+			"rule": "template -> test/package",
+			"condition": "name==Login"
+		},
+		{
+			"rule": "template -> test/package",
+			"condition": "name==Login"
+		}
+	],
+	"parameters": [
+		{
+			"id": "name",
+			"desc": "O nome do serviço. Ex: GetKids.",
+			"regex": "ˆ*Service",
+			"type": "free",
+			"required": true
+		},
+		{
+			"id": "feature",
+			"desc": "O nome da feature",
+			"type": "free",
+			"regex": ""
+		},
+		{
+			"id": "type",
+			"desc": "O tipo de exchange de dados",
+			"regex": "",
+			"type": "select",
+			"required": false,
+			"options": ["GET", "POST", "PUT", "DELETE"]
+		},
+		{
+			"id": "ObjectOut",
+			"desc": "O objeto de saida",
+			"type": "formatted",
+			"required": true,
+			"condition": "data_exchange==BODY"
+		},
+		{
+			"id": "data_exchange",
+			"desc": "O tipo de comunicação",
+			"type": "select",
+			"required": true,
+			"options": ["PATH", "BODY", "QUERY", "MULTI"]
+		},
+		{
+			"id": "url",
+			"desc": "A URL do serviço (a partir do /v1/, ex: retail/{fryman}/purchase)",
+			"regex": "",
+			"type": "free",
+			"required": true
+		},
+		{
+			"id": "params",
+			"desc": "Os parâmetros que vão na URL",
+			"type": "list",
+			"required": true,
+			"condition": "data_exchange==BODY"
+		}
+	]
+}

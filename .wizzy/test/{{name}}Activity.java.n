@@ -1,0 +1,18 @@
+package co.vm.features.{{feature}}
+
+import co.vm.features.apis.Api
+//New Imports comes here
+
+fun class {{feature}}Services {
+    // Servico {{name}} {{feature}}
+    fun
+        {%if(type==GET)%}fetch{{name}}{%endif%}{%if(type==POST)%}post{{name}}{%endif%}
+        (
+
+    ) {
+	    return {{objectOut}};
+    }
+
+    //New Services comes here
+}
+
